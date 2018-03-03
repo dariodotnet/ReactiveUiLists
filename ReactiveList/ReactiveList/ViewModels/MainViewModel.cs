@@ -22,10 +22,18 @@ namespace ReactiveList.ViewModels
 
             ToDoItems.CountChanged.Subscribe(x => Count = x);
 
-            _dataService.Listen().ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(item =>
+            _dataService.Listen()
+                .Buffer(TimeSpan.FromSeconds(3), 500)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(items =>
                 {
-                    ToDoItems.Add(item);
+                    using (ToDoItems.SuppressChangeNotifications())
+                    {
+                        foreach (var item in items)
+                        {
+                            ToDoItems.Add(item);
+                        }
+                    }
                 });
 
             _dataService.Load(10);

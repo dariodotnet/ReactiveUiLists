@@ -24,7 +24,9 @@
         </StackPanel>
         <ListView x:Name="TodoList"
                   Grid.Row="1"
-                  ItemsSource="{x:Bind ViewModel.ToDoItems}">
+                  ItemContainerTransitions="{x:Null}"
+                  ItemsSource="{x:Bind ViewModel.ToDoItems}"
+                  Transitions="{x:Null}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:ToDoItem">
                     <Grid>
